@@ -2,6 +2,7 @@
 import { drawRemapLogo } from '../engine/textures.ts'
 import { audio } from '../engine/audio.ts'
 import { D } from '../data/dialogue.ts'
+import { speech } from '../engine/speech.ts'
 import type { SettingsData } from '../engine/save.ts'
 
 const ui = () => document.getElementById('ui-root')!
@@ -345,6 +346,7 @@ export function showStory(onDone: () => void): void {
     card.classList.toggle('mission', !!page.mission)
     title.textContent = page.title
     body.textContent = ''
+    speech.speak('narrator', `${page.title}. ${page.text}`)
     next.style.visibility = 'hidden'
     let i = 0
     if (typing) clearInterval(typing)
@@ -369,7 +371,7 @@ export function showStory(onDone: () => void): void {
     show()
   }
   const keyHandler = (e: KeyboardEvent) => { if (e.code === 'KeyE' || e.code === 'Space' || e.code === 'Enter') advance() }
-  const cleanup = () => { window.removeEventListener('keydown', keyHandler); screen.remove() }
+  const cleanup = () => { window.removeEventListener('keydown', keyHandler); speech.stop(); screen.remove() }
   window.addEventListener('keydown', keyHandler)
   screen.addEventListener('click', advance)
   show()

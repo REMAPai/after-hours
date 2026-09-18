@@ -397,9 +397,12 @@ function tick() {
       }
     }
     if (input.consume('interact')) {
-      if (dialogue.active) dialogue.advance()
-      else {
+      // the game never pauses for talk: E acts on whatever you're facing first,
+      // and only skips the current line when there's nothing to interact with
+      if (interact.focused && !interact.suppressed) {
         if (interact.tryInteract()) player.char.rig.triggerInteract()
+      } else if (dialogue.active) {
+        dialogue.advance()
       }
     }
     if (dialogue.active) {

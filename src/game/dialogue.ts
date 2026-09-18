@@ -13,6 +13,8 @@ export interface DialogueLine {
   choices?: { label: string; value: string }[]
 }
 
+export interface SayOpts { onDone?: () => void; onChoice?: (v: string) => void; critical?: boolean }
+
 interface ActiveExchange {
   lines: DialogueLine[]
   index: number
@@ -28,6 +30,9 @@ export class DialogueSystem {
   private choicesEl: HTMLDivElement
   private contEl: HTMLDivElement
   private exchange: ActiveExchange | null = null
+  // Exchanges started while one is playing wait their turn instead of replacing it,
+  // so puzzle callbacks (onDone/onChoice) are never lost when the player keeps acting.
+  private queue: { lines: DialogueLine[]; opts: SayOpts }[] = []
   private charIndex = 0
   private charTimer = 0
   private device: Device = 'kb'
@@ -63,8 +68,9 @@ export class DialogueSystem {
 
   setDevice(d: Device) { this.device = d }
 
-  say(lines: DialogueLine[], opts: { onDone?: () => void; onChoice?: (v: string) => void; critical?: boolean } = {}) {
-    this.exchange = { lines, index: 0, onDone: opts.onDone, onChoice: opts.onChoice, critical: opts.critical ?? false }
+  say(lines: DialogueLine[], opts: SayOpts = {}) {
+    if (this.exchange) { this.queue.push({ lines, opts }); return }
+    this.exchange ={ lines, index: 0, onDone: opts.onDone, onChoice: opts.onChoice, critical: opts.critical ?? false }
     this.active = true
     this.startLine()
   }
@@ -146,6 +152,8 @@ export class DialogueSystem {
     this.bubble.style.display = 'none'
     this.onExchangeEnd?.()
     finished?.onDone?.()
+    const next = this.queue.shift()
+    if (next) setTimeout(() => { if (!this.exchange) this.say(next.lines, next.opts); else this.queue.unshift(next) }, 350)
   }
 
   isTalking(): boolean {

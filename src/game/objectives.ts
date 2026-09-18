@@ -2,6 +2,7 @@
 import { FRAGMENTS, LANYARD_TIERS, lanyardTier, type FragmentId } from '../config.ts'
 import { drawRemapLogo } from '../engine/textures.ts'
 import { audio } from '../engine/audio.ts'
+import { speech } from '../engine/speech.ts'
 
 export class HUD {
   root: HTMLDivElement
@@ -159,6 +160,8 @@ export class HUD {
       const t = this.toastQueue.shift()!
       this.toastEl.textContent = t
       this.toastEl.style.display = 'block'
+      // the player reads what they inspect aloud — but never over a ghost mid-line
+      if (!speech.speaking) speech.speak('player', t)
       this.toastTimer = 3 + t.length * 0.02
     }
     // fade HUD when idle

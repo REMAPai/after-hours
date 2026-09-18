@@ -16,7 +16,8 @@ const PROFILES: Record<string, VoiceProfile> = {
   beatriz: { pitch: 1.05, rate: 0.95, gender: 'f' },   // Sana
   sam: { pitch: 0.8, rate: 0.9, gender: 'm' },         // Tariq
   player: { pitch: 1.05, rate: 1.0, gender: 'n' },
-  narrator: { pitch: 0.9, rate: 0.95, gender: 'n' }
+  // Opening narration: deep, unhurried, warm — the gravelly documentary register
+  narrator: { pitch: 0.55, rate: 0.8, gender: 'm', volume: 1 }
 }
 
 const FEMALE_HINTS = /female|zira|hazel|susan|samantha|victoria|karen|moira|tessa|fiona|libby|sonia|aria|jenny|emma|ava|serena/i
