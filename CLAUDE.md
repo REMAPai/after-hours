@@ -36,9 +36,15 @@ Source of truth: `GAME_SPEC.md` (SRS v2.0).
 - `src/data/dialogue.ts` — ALL text lives here
 - `src/ui/` — DOM screens (title/login, pause, settings, credits) + styles
 
+## Git & deploy policy (solo project)
+
+Hamza is the only developer and user. Direct commits and pushes to `main` are authorised
+for this repo (his explicit instruction, 2026-09-19) — no PR required. Every push to `main`
+auto-deploys to production on Vercel (https://after-hours-pink-ten.vercel.app).
+
 ## Safe vs approval-required
 
-- Safe: edits under `src/`, running dev/build/preview, adding tests.
+- Safe: edits under `src/`, running dev/build/preview, adding tests, committing and pushing to `main`.
 - Ask first: changing `package.json` dependencies, deleting saves logic, touching `presence/` (v2 seam — do not build).
 - Forbidden: adding runtime network calls, external asset files, backends, analytics beyond the existing `postMessage` embed events.
 
