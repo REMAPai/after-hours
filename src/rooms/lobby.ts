@@ -194,10 +194,10 @@ export function buildLobby(game: Game): RoomModule {
       jokeIdx++
       const greeting = D.doris.greet[greetIdx % D.doris.greet.length]
       greetIdx++
-      const route = game.hud.currentHint || 'Off you pop down the corridor, love.'
+      const route = game.hud.currentHint || 'Head down the corridor. You will find them.'
       game.say([
         { speaker: 'doris', name: 'AMNA', text: greeting, anchor },
-        { speaker: 'doris', text: `Your next step, love: ${route}`, anchor },
+        { speaker: 'doris', text: `Your next step: `, anchor },
         { speaker: 'doris', text: joke, anchor }
       ], { ghost: doris })
     }

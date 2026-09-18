@@ -69,7 +69,16 @@ export class DialogueSystem {
   setDevice(d: Device) { this.device = d }
 
   say(lines: DialogueLine[], opts: SayOpts = {}) {
-    if (this.exchange) { this.queue.push({ lines, opts }); return }
+    if (this.exchange) {
+      // Talking to the ghost who is already talking (or re-pressing E) skips the
+      // current line instead of queueing a repeat of their whole script.
+      const cur = this.cur()
+      const same = cur && lines[0] && lines[0].speaker === cur.speaker && !opts.onDone && !opts.onChoice
+      const dup = this.queue.some((q) => q.lines[0]?.text === lines[0]?.text)
+      if (same || dup) { this.advance(); return }
+      this.queue.push({ lines, opts })
+      return
+    }
     this.exchange ={ lines, index: 0, onDone: opts.onDone, onChoice: opts.onChoice, critical: opts.critical ?? false }
     this.active = true
     this.startLine()
