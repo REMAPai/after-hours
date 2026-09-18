@@ -121,7 +121,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
   let beatriz: Ghost | null = null
   if (!solved) {
     beatriz = makeGhost('beatriz')
-    beatriz.setPosition(cx, 0.2, cz + 0.72, Math.PI) // in her chair, facing the desk
+    beatriz.setPosition(cx, -0.37, cz + 0.72, Math.PI) // in her chair, facing the desk
     beatriz.seated = true
     game.scene.add(beatriz.group)
     game.ghosts.push(beatriz)

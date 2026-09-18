@@ -29,6 +29,10 @@ export class HUD {
 
     this.sticky = document.createElement('div')
     this.sticky.className = 'sticky-note'
+    const label = document.createElement('div')
+    label.className = 'sticky-label'
+    label.textContent = 'MISSION'
+    this.sticky.appendChild(label)
     this.stickyText = document.createElement('div')
     this.stickyText.className = 'sticky-text'
     this.stickyWhere = document.createElement('div')

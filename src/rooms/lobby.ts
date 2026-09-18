@@ -181,6 +181,7 @@ export function buildLobby(game: Game): RoomModule {
           {
             ghost: doris, critical: true, onDone: () => {
               game.refreshObjective() // routes to the nearest starter room with directions + beacon
+              game.toast(D.missionBrief)
               game.saveNow()
             }
           }

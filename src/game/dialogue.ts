@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { audio } from '../engine/audio.ts'
 import { BLIPS } from '../data/dialogue.ts'
 import { glyph, type Device } from '../engine/input.ts'
+import { speech } from '../engine/speech.ts'
 
 export interface DialogueLine {
   speaker: string          // blip + name tag key
@@ -80,6 +81,7 @@ export class DialogueSystem {
     this.contEl.innerHTML = ''
     if (this.charsPerSec >= 999) this.charIndex = line.text.length
     if (this.exchange?.index === 0) this.onExchangeStart?.(line)
+    speech.speak(line.speaker, line.text)
     this.log.push({ name: line.name ?? line.speaker, text: line.text })
     if (this.log.length > 30) this.log.shift()
   }
@@ -130,6 +132,7 @@ export class DialogueSystem {
 
   private end() {
     const finished = this.exchange
+    speech.stop()
     this.exchange = null
     this.active = false
     this.bubble.style.display = 'none'
@@ -153,7 +156,7 @@ export class DialogueSystem {
         this.charTimer -= 1
         this.charIndex++
         const ch = line.text[this.charIndex - 1]
-        if (ch && ch !== ' ' && this.charIndex % 2 === 0) {
+        if (ch && ch !== ' ' && this.charIndex % 2 === 0 && !(speech.enabled && speech.available)) {
           const blip = BLIPS[line.speaker] ?? BLIPS.narrator
           audio.blip(blip.pitch, blip.low)
         }

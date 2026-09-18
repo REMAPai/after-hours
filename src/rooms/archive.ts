@@ -168,7 +168,7 @@ export function buildArchive(game: Game): RoomModule {
   let ines: Ghost | null = null
   if (!solved) {
     ines = makeGhost('ines')
-    ines.setPosition(cx + 3.1, 0.35, cz + 0.7, Math.PI * 0.9)
+    ines.setPosition(cx + 3.1, -0.04, cz + 0.7, Math.PI * 0.9) // perched on the desk edge (top 0.79)
     ines.seated = true
     ines.rig.spine.rotation.x = 0.12
     game.scene.add(ines.group)

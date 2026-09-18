@@ -236,6 +236,7 @@ export function showSettings(s: SettingsData, onChange: () => void, onClose: () 
   row('Text size', select([['100', '100%'], ['125', '125%'], ['150', '150%']], () => String(s.textSize), (v) => { s.textSize = parseInt(v) }))
   row('Reduce motion', check(() => s.reduceMotion, (v) => { s.reduceMotion = v }))
   row('Colour-blind-safe minimap', check(() => s.cbMinimap, (v) => { s.cbMinimap = v }))
+  row('Ghost voices (browser speech)', check(() => s.voice, (v) => { s.voice = v }))
   row('Text speed', select([['slow', 'Slow'], ['normal', 'Normal'], ['instant', 'Instant']], () => s.textSpeed, (v) => { s.textSpeed = v as SettingsData['textSpeed'] }))
   card.appendChild(el('div', 'settings-section', 'GRAPHICS'))
   row('Quality', select([['auto', 'Auto'], ['low', 'Low'], ['med', 'Medium'], ['high', 'High']], () => s.quality, (v) => { s.quality = v as SettingsData['quality'] }))
@@ -321,4 +322,55 @@ export function makeFade(): (cb?: () => void) => void {
       setTimeout(() => overlay.classList.remove('on'), 250)
     }, 750)
   }
+}
+
+// --- Opening story: onboarding-pack cards, click/E to continue -----------------------
+export function showStory(onDone: () => void): void {
+  const screen = el('div', 'screen story-screen')
+  const card = el('div', 'story-card')
+  const kicker = el('div', 'story-kicker', 'REMAP · NEW STARTER PACK · PAGE 1 OF ' + D.story.length)
+  const title = el('h2', 'story-title')
+  const body = el('p', 'story-text')
+  const next = el('div', 'story-next', `${'<span class="glyph key">E</span>'} / click to continue`)
+  card.append(kicker, title, body, next)
+  screen.appendChild(card)
+  ui().appendChild(screen)
+  let idx = -1
+  let typing: number | null = null
+  const show = () => {
+    idx++
+    if (idx >= D.story.length) { cleanup(); onDone(); return }
+    const page = D.story[idx]
+    kicker.textContent = `REMAP · NEW STARTER PACK · PAGE ${idx + 1} OF ${D.story.length}`
+    card.classList.toggle('mission', !!page.mission)
+    title.textContent = page.title
+    body.textContent = ''
+    next.style.visibility = 'hidden'
+    let i = 0
+    if (typing) clearInterval(typing)
+    typing = window.setInterval(() => {
+      if (i < page.text.length) {
+        body.textContent = page.text.slice(0, ++i)
+        if (i % 3 === 0) audio.blip(page.mission ? 200 : 260, true)
+      } else {
+        clearInterval(typing!); typing = null
+        next.style.visibility = 'visible'
+      }
+    }, 22)
+  }
+  const advance = () => {
+    if (typing) { // finish the typewriter first
+      clearInterval(typing); typing = null
+      body.textContent = D.story[idx].text
+      next.style.visibility = 'visible'
+      return
+    }
+    audio.sfx('paperPeel')
+    show()
+  }
+  const keyHandler = (e: KeyboardEvent) => { if (e.code === 'KeyE' || e.code === 'Space' || e.code === 'Enter') advance() }
+  const cleanup = () => { window.removeEventListener('keydown', keyHandler); screen.remove() }
+  window.addEventListener('keydown', keyHandler)
+  screen.addEventListener('click', advance)
+  show()
 }
