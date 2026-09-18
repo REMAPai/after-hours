@@ -33,6 +33,12 @@ export class DialogueSystem {
   private device: Device = 'kb'
   private choiceIdx = 0
   charsPerSec = 35
+  // Lines play out on their own: advance when the spoken line ends (or after a
+  // reading-time fallback). Choice lines always wait for the player.
+  autoAdvance = true
+  private lineTimer = 0
+  private lineToken = 0
+  private speechDone = true
   active = false
   log: { name: string; text: string }[] = []
   onExchangeStart: ((line: DialogueLine) => void) | null = null
@@ -81,7 +87,9 @@ export class DialogueSystem {
     this.contEl.innerHTML = ''
     if (this.charsPerSec >= 999) this.charIndex = line.text.length
     if (this.exchange?.index === 0) this.onExchangeStart?.(line)
-    speech.speak(line.speaker, line.text)
+    this.lineTimer = 0
+    const token = ++this.lineToken
+    this.speechDone = !speech.speak(line.speaker, line.text, () => { if (token === this.lineToken) this.speechDone = true })
     this.log.push({ name: line.name ?? line.speaker, text: line.text })
     if (this.log.length > 30) this.log.shift()
   }
@@ -180,7 +188,18 @@ export class DialogueSystem {
         })
         this.contEl.innerHTML = ''
       } else {
-        this.contEl.innerHTML = `${glyph('interact', this.device)} Continue`
+        this.contEl.innerHTML = `${glyph('interact', this.device)} skip`
+        // auto-advance: minimum reading time, then wait for the voice to finish (capped)
+        this.lineTimer += dt
+        const readTime = Math.max(1.2, 0.8 + line.text.length * 0.028)
+        // voice done = its end event fired, or nothing is speaking any more; hard cap
+        // scaled to the line so a stuck speech engine can never freeze a conversation
+        const voiceDone = this.speechDone || !speech.speaking
+        const cap = readTime + Math.min(12, line.text.length * 0.05)
+        if (this.autoAdvance && this.lineTimer >= readTime && (voiceDone || this.lineTimer > cap)) {
+          this.advance()
+          return
+        }
       }
     }
     // position: project anchor

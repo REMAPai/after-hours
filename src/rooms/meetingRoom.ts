@@ -110,7 +110,7 @@ export function buildMeetingRoom(game: Game): RoomModule {
   g.add(flip)
   game.interact.add({ id: 'mtg-flip', position: flip.position.clone().setY(1.2), verb: 'Read flipchart', mesh: flip, onInteract: () => game.toast(D.toasts.meetingRoom.parkingLot) })
 
-  // --- Ghosts: Priya + 9 standup ghosts ---------------------------------------
+  // --- Ghosts: Zainab + 9 standup ghosts ---------------------------------------
   let priya: Ghost | null = null
   const standups: Ghost[] = []
   if (!solved) {
@@ -148,7 +148,7 @@ export function buildMeetingRoom(game: Game): RoomModule {
     game.interact.add({
       id: 'marker-keepsake',
       position: marker.position.clone(),
-      verb: "Inspect Priya's marker",
+      verb: "Inspect Zainab's marker",
       mesh: marker,
       onInteract: () => game.toast(D.priya.echo)
     })
@@ -192,14 +192,14 @@ export function buildMeetingRoom(game: Game): RoomModule {
     })
   }
 
-  // --- Priya interaction ---------------------------------------------------------
+  // --- Zainab interaction ---------------------------------------------------------
   let taskGiven = game.flags.has('priyaTask')
   let greetIdx = 0
   game.interact.add({
     id: 'priya',
     position: new THREE.Vector3(cx - 3.2, 0, cz - 1.6),
     radius: 2.2,
-    verb: 'Talk to Priya',
+    verb: 'Talk to Zainab',
     priority: 0.9,
     mesh: priya?.rig.root,
     enabled: () => !!priya && !priya.released && !priya.releasing,
@@ -210,7 +210,7 @@ export function buildMeetingRoom(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('priyaTask')
         game.say([
-          { speaker: 'priya', name: 'PRIYA', text: D.priya.greet[0], anchor },
+          { speaker: 'priya', name: 'ZAINAB', text: D.priya.greet[0], anchor },
           { speaker: 'priya', text: D.priya.task[0], anchor },
           { speaker: 'priya', text: D.priya.task[1], anchor }
         ], {
@@ -221,7 +221,7 @@ export function buildMeetingRoom(game: Game): RoomModule {
         })
       } else if (haveNote) {
         game.say([
-          { speaker: 'priya', name: 'PRIYA', text: D.priya.solvePrompt, anchor },
+          { speaker: 'priya', name: 'ZAINAB', text: D.priya.solvePrompt, anchor },
           {
             speaker: 'player', name: 'YOU', text: 'You clear your throat…',
             anchor: () => game.player.pos.clone().add(new THREE.Vector3(0, 2.0, 0)),
@@ -232,12 +232,12 @@ export function buildMeetingRoom(game: Game): RoomModule {
           }
         ], {
           ghost: priya, critical: true,
-          onChoice: (v) => { if (v === 'solve') solve(); else game.say([{ speaker: 'priya', name: 'PRIYA', text: 'NO. No other business. Read the note. Say the words.', anchor }], { ghost: priya! }) }
+          onChoice: (v) => { if (v === 'solve') solve(); else game.say([{ speaker: 'priya', name: 'ZAINAB', text: 'NO. No other business. Read the note. Say the words.', anchor }], { ghost: priya! }) }
         })
       } else {
         const line = D.priya.greet[1 + (greetIdx % 2)]
         greetIdx++
-        game.say([{ speaker: 'priya', name: 'PRIYA', text: line, anchor }], { ghost: priya })
+        game.say([{ speaker: 'priya', name: 'ZAINAB', text: line, anchor }], { ghost: priya })
       }
     }
   })
@@ -258,7 +258,7 @@ export function buildMeetingRoom(game: Game): RoomModule {
     const anchor = priya.rig.head
     setTimeout(() => {
       game.say(
-        [D.priya.solve, ...D.priya.release].map((text, i) => ({ speaker: 'priya', name: i === 0 ? 'PRIYA' : undefined, text, anchor })),
+        [D.priya.solve, ...D.priya.release].map((text, i) => ({ speaker: 'priya', name: i === 0 ? 'ZAINAB' : undefined, text, anchor })),
         {
           ghost: priya!, critical: true, onDone: () => {
             game.player.locked = true
@@ -303,10 +303,10 @@ export function buildMeetingRoom(game: Game): RoomModule {
         hintTimer += dt
         if (hintTimer > 60 && hintStage === 0) {
           hintStage = 1
-          game.say([{ speaker: 'priya', name: 'PRIYA', text: D.priya.hints[0], anchor: priya.rig.head }], { ghost: priya, frame: false })
+          game.say([{ speaker: 'priya', name: 'ZAINAB', text: D.priya.hints[0], anchor: priya.rig.head }], { ghost: priya, frame: false })
         } else if (hintTimer > 120 && hintStage === 1) {
           hintStage = 2
-          game.say([{ speaker: 'priya', name: 'PRIYA', text: D.priya.hints[1], anchor: priya.rig.head }], { ghost: priya, frame: false })
+          game.say([{ speaker: 'priya', name: 'ZAINAB', text: D.priya.hints[1], anchor: priya.rig.head }], { ghost: priya, frame: false })
           // glint the tin
           const tm = tin.material as THREE.MeshStandardMaterial
           tm.emissive = new THREE.Color(0xffd080)

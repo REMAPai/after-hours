@@ -1,7 +1,7 @@
 // ALL text lines live here, keyed by ghost/beat (spec §6.2, §26 writing guide).
-// Verbal tics: Marcus incident-report fragments; Priya meeting jargon; Ines trails off;
-// Gary one-word justice; Kit critique vocabulary; Beatriz precise numbers; Doris small talk,
-// calls everyone "love"; Sam plain, short, kind. Building: politely ominous -> warm.
+// Verbal tics: Abdul Moiz incident-report fragments; Zainab meeting jargon; Hira trails off;
+// Irfan one-word justice; Bilal critique vocabulary; Sana precise numbers; Amna small talk,
+// calls everyone "love"; Tariq plain, short, kind. Building: politely ominous -> warm.
 
 export const D = {
   // Opening story cards (shown before the badge-in) — what is happening, and the MISSION.
@@ -32,10 +32,10 @@ export const D = {
       'You look like you could use a mint. The mints expired in 2014. Character building.'
     ],
     intro: [
-      "Welcome to Remap, love. I'm Doris — front desk, since 2009. Before you ask: yes, I know I'm see-through. It's slimming.",
+      "Welcome to Remap, love. I'm Amna — front desk, since 2009. Before you ask: yes, I know I'm see-through. It's slimming.",
       "The building's locked us in until 'the work is done.' Not YOUR work, love — theirs. The ones who stayed past closing time. Forever, as it turns out.",
       'Every one of them is stuck on one little thing. Finish it for them, they pop off like champagne. You collect the sparkly bit. Seven sparkly bits open that lift.',
-      "Start with the Server Room or the Meeting Room, down the corridor. Marcus is the twitchy one; the Meeting Room is the loud one. You'll hear it."
+      "Start with the Server Room or the Meeting Room, down the corridor. Abdul Moiz is the twitchy one; the Meeting Room is the loud one. You'll hear it."
     ],
     jokes: [
       "Visitor badge? Oh you poor thing. IT's ticket queue survived them, you know.",
@@ -43,7 +43,7 @@ export const D = {
       "I'd offer you tea, but the kettle unionised in 2016 and we haven't spoken since.",
       'The plant by the copier died in 2013. We keep watering the memory of it.',
       "Don't mind the flickering lights, love. That's just the building thinking.",
-      'We had a fire drill once. The fire was lovely. Very punctual. Unlike Gary.',
+      'We had a fire drill once. The fire was lovely. Very punctual. Unlike Irfan.',
       'The photocopier prints things nobody sent. We call it "creative ownership."',
       "You're the first visitor since the auditor. He's fine. Probably. We never checked.",
       'I answered a phone in 2019. Wrong number. Still the highlight of the decade.',
@@ -51,9 +51,9 @@ export const D = {
       'Employee of the Month is decided by the building now. It always picks the boiler.'
     ],
     unlocks: {
-      archive: 'Ooh, the Archive just unlocked, love! Ines is in there. Soft as a library whisper. Do NOT tell her the docs are "fine". She knows what "fine" means.',
-      breakDesign: 'Break Room and Design Studio are open! Gary guards a fridge and Kit guards their own taste. Both losing battles, historically.',
-      finance: "Finance Corner's open, love. Beatriz is lovely. Serene, even. Just — whatever you do — don't say 'reconciliation' without a duck to hand.",
+      archive: 'Ooh, the Archive just unlocked, love! Hira is in there. Soft as a library whisper. Do NOT tell her the docs are "fine". She knows what "fine" means.',
+      breakDesign: 'Break Room and Design Studio are open! Irfan guards a fridge and Bilal guards their own taste. Both losing battles, historically.',
+      finance: "Finance Corner's open, love. Sana is lovely. Serene, even. Just — whatever you do — don't say 'reconciliation' without a duck to hand.",
       rooftop: 'The stairwell clicked open, love. Rooftop. Someone up there has been waiting longer than any of us. Be kind. He will be.',
       lift: 'The lift is humming, love! Seven sparkly bits! Come see me at the desk before you go — I want a proper goodbye.'
     },
@@ -176,14 +176,14 @@ export const D = {
     ],
     rejections: [
       '"SANDWICH". Descriptive. Useless. The thief KNOWS it\'s a sandwich. That\'s WHY.',
-      '"GARY\'S". Which Gary? There were three Garys. Two live. One hungers. Be specific.',
+      '"IRFAN\'S". Which Irfan? There were three Irfans. Two live. One hungers. Be specific.',
       '"FREE FOOD"?! Are you — are you working WITH the thief?'
     ],
     solve: 'Yes. YES. Legally airtight. Spiritually binding. No jury of colleagues would dare.',
     release: [
       'Justice. Cold, refrigerated justice.',
       'The sandwich stays. The label protects it now. Forever.',
-      'Tell the break room… Gary ate. Gary finally ate.'
+      'Tell the break room… Irfan ate. Irfan finally ate.'
     ],
     echo: 'The fridge hums contentedly. Inside, one sandwich rests in state, labelled like a monument.'
   },
@@ -249,13 +249,13 @@ export const D = {
   sam: {
     arrive: [
       'Evening. Pull up a deckchair — the city does its best work about now.',
-      'You\'re the new one. Three weeks. I know. Doris talks, even to the wind.',
+      'You\'re the new one. Three weeks. I know. Amna talks, even to the wind.',
       'I started this place. Two desks, one kettle, a map on the wall we kept redrawing. Someone said "we should just… re-map it". We laughed. It stuck.',
-      'You met them all, then. Marcus, Priya, Ines. Gary and his sandwich. Kit. Beatriz. Do you know what they had in common?',
+      'You met them all, then. Abdul Moiz, Zainab, Hira. Irfan and his sandwich. Bilal. Sana. Do you know what they had in common?',
       'They cared past closing time. That\'s the whole secret, and the whole problem.',
       'The building never trapped anyone. I know how it sounds. But it just wanted the work finished. Work that\'s finished can be put down.',
       'They finished. You finished it *with* them. So this last piece isn\'t a puzzle. It\'s a gift.',
-      'One more thing. Doris has been at that desk longer than any of us. Go badge out. She\'s waiting to say goodnight.'
+      'One more thing. Amna has been at that desk longer than any of us. Go badge out. She\'s waiting to say goodnight.'
     ],
     echo: 'A telescope cap sits on the ledge. Through the lens: the city, and every light someone left on for someone else.'
   },
@@ -273,13 +273,13 @@ export const D = {
       turnstile: 'A turnstile. It spins freely now. It has nothing left to prove.'
     },
     portraits: {
-      doris: 'Employee of the Month, June 2009: DORIS. "For answering a phone that hadn\'t rung yet."',
-      marcus: 'Employee of the Month, Oct 2018: MARCUS. "For 99.99% uptime. The 0.01% is why he\'s still here."',
-      priya: 'Employee of the Month, Mar 2016: PRIYA. "For running a meeting that nearly ended."',
-      ines: 'Employee of the Month, Jan 2015: INES. "For documentation above and beyond. And beyond."',
-      gary: 'Employee of the Month, Aug 2014: GARY. "For bringing his own lunch. Every day. Twice, on the bad day."',
-      kit: 'Employee of the Month, Feb 2017: KIT. "For 41 logo revisions. The board misses revision 12."',
-      beatriz: 'Employee of the Month, Apr 2016: BEATRIZ. "For finding £0.01. It took three weeks. Worth it."',
+      doris: 'Employee of the Month, June 2009: AMNA. "For answering a phone that hadn\'t rung yet."',
+      marcus: 'Employee of the Month, Oct 2018: ABDUL MOIZ. "For 99.99% uptime. The 0.01% is why he\'s still here."',
+      priya: 'Employee of the Month, Mar 2016: ZAINAB. "For running a meeting that nearly ended."',
+      ines: 'Employee of the Month, Jan 2015: HIRA. "For documentation above and beyond. And beyond."',
+      gary: 'Employee of the Month, Aug 2014: IRFAN. "For bringing his own lunch. Every day. Twice, on the bad day."',
+      kit: 'Employee of the Month, Feb 2017: BILAL. "For 41 logo revisions. The board misses revision 12."',
+      beatriz: 'Employee of the Month, Apr 2016: SANA. "For finding £0.01. It took three weeks. Worth it."',
       sam: 'Founder\'s portrait. Someone has drawn a small crown on it in pencil. The frame allows it.'
     },
     corridor: {
@@ -333,13 +333,13 @@ export const D = {
       microwave: 'The microwave clock says 88:88. It has seen things. It refuses to say when.',
       banner: 'A banner: "HAPPY BIRTHD". The AY fell behind the fridge in 2015. Nobody has ever had a full birthday since.',
       coffee: 'Coffee machine: "OUT OF ORDER (2017)". The note is laminated. Hope was not.',
-      kettle: 'The kettle. It unionised. Doris was serious.',
+      kettle: 'The kettle. It unionised. Amna was serious.',
       cakeBox: 'A cake box, empty. Inside, in icing residue: the ghost of the word "FAREWELL".',
       olive: 'A single olive in the fridge, in its own tupperware, labelled "DO NOT". Do not what? Do NOT.',
       q2: 'Galaxy-glowing tupperware labelled "DO NOT OPEN — Q2". It is warm. It hums in a minor key.'
     },
     designStudio: {
-      plant: 'A plant. It\'s ALIVE. The first living thing in the building. Kit waters it with critique.',
+      plant: 'A plant. It\'s ALIVE. The first living thing in the building. Bilal waters it with critique.',
       mannequin: 'A mannequin in a branded hoodie. The kerning on the hoodie is, admittedly, perfect.',
       pottery: 'The pottery shelf of failed ideas. One mug has three handles. "For stakeholders," says the note.',
       swatches: 'A pantone wall. One swatch is labelled "the good orange". It is circled 14 times.',
@@ -361,13 +361,13 @@ export const D = {
     },
     lift: {
       cert: 'Lift inspection certificate: "last inspected: never".',
-      phone: 'The emergency phone. It has one button. The button says "DORIS".',
+      phone: 'The emergency phone. It has one button. The button says "AMNA".',
       mirror: 'The lift mirror. You look tired. You look *done*, in the best way.'
     },
     misc: {
       duckGet: 'The vending machine dispenses one RUBBER DUCK. It has been waiting since 2016. It squeaks in gratitude.',
       duckHint: 'Something rattles inside the vending machine. A coil is jammed — the machines know how to fix it.',
-      penGet: "Ines's pen. Your handwriting will never be the same. It will be *better*.",
+      penGet: "Hira's pen. Your handwriting will never be the same. It will be *better*.",
       fridgeItems: 'A shelf of horrors: the Q2 tupperware, a single olive, a houseplant. And one unlabelled sandwich, radiating grievance.'
     }
   },
@@ -381,19 +381,19 @@ export const D = {
       serverCables: 'Reconnect the four cables on Server 6.',
       meeting: 'Someone has to end the Eternal Standup.',
       meetingNotes: 'Find the final agenda item (5 hiding spots).',
-      meetingSay: 'Take the note to Priya and end the meeting.',
+      meetingSay: 'Take the note to Zainab and end the meeting.',
       archive: 'The Archive is open. Someone quiet is inside.',
       archiveBinder: 'Find THE ONBOARDING GUIDE v14 FINAL final(2).',
-      archiveRead: "Take the binder to Ines's desk and read page one.",
+      archiveRead: "Take the binder to Hira's desk and read page one.",
       breakRoom: 'The Break Room is open. Someone is staring at a fridge.',
       sandwich: 'Label the sandwich. Properly. Legally. Spiritually.',
       design: 'The Design Studio is open. Someone is mid-critique.',
       designChoose: 'Find the real Remap logo among the six frames.',
       finance: 'Finance Corner is open. Bring exact change.',
-      duckRoute: 'Beatriz needs what the vending machine owes. (Server room → break room.)',
-      duckPresent: 'Present the duck to Beatriz.',
+      duckRoute: 'Sana needs what the vending machine owes. (Server room → break room.)',
+      duckPresent: 'Present the duck to Sana.',
       rooftop: 'The stairwell is open. Go up.',
-      badgeOut: 'Go badge out. Doris is waiting to say goodnight.',
+      badgeOut: 'Go badge out. Amna is waiting to say goodnight.',
       lift: 'The lift is open. Time to go home.'
     },
     // Plain-language directions shown under the objective (spec: never let anyone get lost)
@@ -412,11 +412,11 @@ export const D = {
       server: 'Match each cable label to its port icon. The MYSTERY cable fits the "???" port.',
       meeting: 'Check: under the table, behind the whiteboard, the projector tray, a chair, the biscuit tin.',
       archive: 'The binder spines lie — find "v14 FINAL final(2)". Then take it to the lamp-lit desk.',
-      breakRoom: 'Gary needs a label so specific it names the ghost. Option three.',
+      breakRoom: 'Irfan needs a label so specific it names the ghost. Option three.',
       design: 'Five frames are jokes. The clean simple mark is the one.',
-      finance: 'No duck? Server room mystery cable → vending machine → duck → Beatriz.',
+      finance: 'No duck? Server room mystery cable → vending machine → duck → Sana.',
       rooftop: 'Just walk. Listen. There is no puzzle up here.',
-      lobby: 'Talk to Doris at the desk — she always knows the next step.'
+      lobby: 'Talk to Amna at the desk — she always knows the next step.'
     },
     toastFragment: (name: string) => `Fragment collected: ${name}`,
     toastLanyard: [
@@ -444,14 +444,14 @@ export const D = {
       ['Testing', 'The building itself (it insisted)']
     ],
     signoffs: [
-      ['Doris', 'Come back and see me, love. The desk gets quiet at night. — D x'],
-      ['Marcus', 'uptime 100%. you\'re the root cause (of the good kind). — M'],
-      ['Priya', 'Great sync today. No follow-ups. First time for everything. — P'],
-      ['Ines', 'Read page two sometime. It\'s even better. — i'],
-      ['Gary', 'Sandwich. Safe. Hero. — G'],
-      ['Kit', 'You have good taste. Don\'t let anyone add a gradient to you. — K'],
-      ['Beatriz', 'Your account is settled. Morale: essential. — B (and the duck)'],
-      ['Sam', 'Lights off on your way out. Not all of them. — S']
+      ['Amna', 'Come back and see me, love. The desk gets quiet at night. — A x'],
+      ['Abdul Moiz', 'uptime 100%. you\'re the root cause (of the good kind). — A.M.'],
+      ['Zainab', 'Great sync today. No follow-ups. First time for everything. — Z'],
+      ['Hira', 'Read page two sometime. It\'s even better. — H'],
+      ['Irfan', 'Sandwich. Safe. Hero. — I'],
+      ['Bilal', 'You have good taste. Don\'t let anyone add a gradient to you. — B'],
+      ['Sana', 'Your account is settled. Morale: essential. — S (and the duck)'],
+      ['Tariq', 'Lights off on your way out. Not all of them. — T']
     ],
     playAgain: 'Play again?',
     stats: (time: string, hints: number, sandwichTries: number) =>

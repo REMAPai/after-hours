@@ -1,4 +1,4 @@
-// ROOFTOP — "Purpose": Sam, the skyline, no puzzle (spec §8.8).
+// ROOFTOP — "Purpose": Tariq, the skyline, no puzzle (spec §8.8).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -164,7 +164,7 @@ export function buildRooftop(game: Game): RoomModule {
     }
   })
 
-  // --- Sam --------------------------------------------------------------------
+  // --- Tariq --------------------------------------------------------------------
   let sam: Ghost | null = null
   if (!done || !game.fragments.includes('purpose')) {
     sam = makeGhost('sam')
@@ -192,7 +192,7 @@ export function buildRooftop(game: Game): RoomModule {
     id: 'sam',
     position: new THREE.Vector3(56.5, 0, -58.2),
     radius: 3,
-    verb: 'Sit with Sam',
+    verb: 'Sit with Tariq',
     priority: 0.9,
     mesh: sam?.rig.root,
     enabled: () => !!sam && !sam.released && !sam.releasing && !talked,
@@ -202,7 +202,7 @@ export function buildRooftop(game: Game): RoomModule {
       const anchor = sam.rig.head
       audio.setMusic('rooftop')
       game.say(
-        D.sam.arrive.map((text, i) => ({ speaker: 'sam', name: i === 0 ? 'SAM' : undefined, text, anchor })),
+        D.sam.arrive.map((text, i) => ({ speaker: 'sam', name: i === 0 ? 'TARIQ' : undefined, text, anchor })),
         {
           ghost: sam, critical: true, onDone: () => {
             game.player.locked = true

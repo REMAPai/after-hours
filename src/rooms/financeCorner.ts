@@ -1,4 +1,4 @@
-// FINANCE CORNER — "Balance": Beatriz + Reconcile the Duck (spec §8.7).
+// FINANCE CORNER — "Balance": Sana + Reconcile the Duck (spec §8.7).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -64,7 +64,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
   g.add(cert)
   game.interact.add({ id: 'fin-cert', position: new THREE.Vector3(cx + 4.9, 1.6, cz + 1), verb: 'Read certificate', mesh: cert, onInteract: () => game.toast(D.toasts.financeCorner.cert) })
 
-  // Duck outline on Beatriz's desk
+  // Duck outline on Sana's desk
   const duckOutline = new THREE.Mesh(new THREE.PlaneGeometry(0.24, 0.2), new THREE.MeshStandardMaterial({
     map: makeScreenTexture((c, w, h) => {
       c.clearRect(0, 0, w, h)
@@ -117,7 +117,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
   sheet.position.set(cx + 2, 1.7, cz - 4.85)
   g.add(sheet)
 
-  // --- Beatriz -----------------------------------------------------------------
+  // --- Sana -----------------------------------------------------------------
   let beatriz: Ghost | null = null
   if (!solved) {
     beatriz = makeGhost('beatriz')
@@ -135,7 +135,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
     game.interact.add({
       id: 'calc-keepsake',
       position: calc.position.clone().setY(1),
-      verb: "Inspect Beatriz's calculator",
+      verb: "Inspect Sana's calculator",
       mesh: calc,
       onInteract: () => game.toast(D.beatriz.echo)
     })
@@ -147,7 +147,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
     id: 'beatriz',
     position: new THREE.Vector3(cx, 0, cz),
     radius: 2.2,
-    verb: game.duck === 'held' ? 'Present the duck' : 'Talk to Beatriz',
+    verb: game.duck === 'held' ? 'Present the duck' : 'Talk to Sana',
     priority: 0.9,
     mesh: beatriz?.rig.root,
     enabled: () => !!beatriz && !beatriz.released && !beatriz.releasing,
@@ -158,7 +158,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
       if (game.duck === 'held') {
         if (it) it.verb = 'Present the duck'
         game.say([
-          { speaker: 'beatriz', name: 'BEATRIZ', text: D.beatriz.taskDuck[0], anchor },
+          { speaker: 'beatriz', name: 'SANA', text: D.beatriz.taskDuck[0], anchor },
           { speaker: 'beatriz', text: D.beatriz.scan, anchor }
         ], { ghost: beatriz, critical: true, onDone: () => solve() })
         return
@@ -167,7 +167,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('beatrizTask')
         game.say([
-          { speaker: 'beatriz', name: 'BEATRIZ', text: D.beatriz.greet[0], anchor },
+          { speaker: 'beatriz', name: 'SANA', text: D.beatriz.greet[0], anchor },
           { speaker: 'beatriz', text: D.beatriz.greet[1], anchor },
           { speaker: 'beatriz', text: D.beatriz.taskNoDuck[0], anchor },
           { speaker: 'beatriz', text: D.beatriz.taskNoDuck[1], anchor }
@@ -180,7 +180,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
       } else {
         const line = greetIdx % 2 === 0 ? D.beatriz.hints[game.duck === 'none' ? 0 : 1] : D.beatriz.greet[2]
         greetIdx++
-        game.say([{ speaker: 'beatriz', name: 'BEATRIZ', text: line, anchor }], { ghost: beatriz })
+        game.say([{ speaker: 'beatriz', name: 'SANA', text: line, anchor }], { ghost: beatriz })
       }
     }
   })
@@ -212,7 +212,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
     const anchor = beatriz.rig.head
     setTimeout(() => {
       game.say([
-        { speaker: 'beatriz', name: 'BEATRIZ', text: D.beatriz.solve, anchor },
+        { speaker: 'beatriz', name: 'SANA', text: D.beatriz.solve, anchor },
         { speaker: 'beatriz', text: D.beatriz.release[0], anchor },
         { speaker: 'beatriz', text: D.beatriz.release[1], anchor },
         { speaker: 'beatriz', text: D.beatriz.release[2], anchor }
@@ -237,7 +237,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
     id: 'financeCorner',
     onEnter: () => {
       const it = game.interact.get('beatriz')
-      if (it) it.verb = game.duck === 'held' ? 'Present the duck' : 'Talk to Beatriz'
+      if (it) it.verb = game.duck === 'held' ? 'Present the duck' : 'Talk to Sana'
       if (!solvedGetter()) {
         if (taskGiven) routeToDuck()
         else game.setObjective(D.ui.objectives.finance, D.ui.hints.finance, [cx, cz])
@@ -245,7 +245,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
     },
     update: (dt: number) => {
       const it = game.interact.get('beatriz')
-      if (it && beatriz && !beatriz.released) it.verb = game.duck === 'held' ? 'Present the duck' : 'Talk to Beatriz'
+      if (it && beatriz && !beatriz.released) it.verb = game.duck === 'held' ? 'Present the duck' : 'Talk to Sana'
       if (!solvedGetter()) {
         // £4.99 cell pulses faintly red — emissive pulse on the sheet
         const sm = sheet.material as THREE.MeshStandardMaterial
@@ -255,7 +255,7 @@ export function buildFinanceCorner(game: Game): RoomModule {
         hintTimer += dt
         if (hintTimer > 60 && hintStage === 0) {
           hintStage = 1
-          game.say([{ speaker: 'beatriz', name: 'BEATRIZ', text: D.beatriz.hints[game.duck === 'none' ? 0 : 1], anchor: beatriz.rig.head }], { ghost: beatriz, frame: false })
+          game.say([{ speaker: 'beatriz', name: 'SANA', text: D.beatriz.hints[game.duck === 'none' ? 0 : 1], anchor: beatriz.rig.head }], { ghost: beatriz, frame: false })
         }
       }
     }

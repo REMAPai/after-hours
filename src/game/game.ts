@@ -5,6 +5,7 @@ import { Renderer } from '../engine/renderer.ts'
 import { CameraRig } from '../engine/cameraRig.ts'
 import { Input } from '../engine/input.ts'
 import { audio } from '../engine/audio.ts'
+import { speech } from '../engine/speech.ts'
 import { loadSave, writeSave, clearSave, type SaveData, type SettingsData } from '../engine/save.ts'
 import { World } from './world.ts'
 import { Player } from './player.ts'
@@ -65,7 +66,6 @@ export class Game {
     public settings: SettingsData
   ) {
     dialogue.onExchangeEnd = () => {
-      this.player.locked = this.collectSeq !== null
       this.camRig.endDialogue()
       for (const g of this.ghosts) g.talking = false
     }
@@ -76,16 +76,12 @@ export class Game {
     onDone?: () => void; onChoice?: (v: string) => void; critical?: boolean
     ghost?: Ghost; frame?: boolean
   } = {}) {
-    this.player.locked = true
+    // conversations play out on their own; the player is free to move and look around
     if (opts.ghost) {
       opts.ghost.talking = true
       opts.ghost.lookTarget = this.player.pos.clone().add(new THREE.Vector3(0, 1.5, 0))
-      if (opts.frame !== false) {
-        const gp = new THREE.Vector3()
-        opts.ghost.group.getWorldPosition(gp)
-        this.camRig.startDialogue(this.player.pos.clone(), gp)
-      }
     }
+    void opts.frame
     this.dialogue.say(lines, {
       critical: opts.critical,
       onChoice: opts.onChoice,
@@ -166,12 +162,12 @@ export class Game {
   private autoGreet(room: RoomId) {
     if (this.greeted.has(room)) return
     const map: Partial<Record<RoomId, { id: string; name: string; line: string }>> = {
-      serverRoom: { id: 'marcus', name: 'Marcus', line: D.marcus.greet[0] },
-      meetingRoom: { id: 'priya', name: 'Priya', line: D.priya.greet[0] },
-      archive: { id: 'ines', name: 'Ines', line: D.ines.greet[0] },
-      breakRoom: { id: 'gary', name: 'Gary', line: D.gary.greet[1] },
-      designStudio: { id: 'kit', name: 'Kit', line: D.kit.greet[0] },
-      financeCorner: { id: 'beatriz', name: 'Beatriz', line: D.beatriz.greet[0] }
+      serverRoom: { id: 'marcus', name: 'Abdul Moiz', line: D.marcus.greet[0] },
+      meetingRoom: { id: 'priya', name: 'Zainab', line: D.priya.greet[0] },
+      archive: { id: 'ines', name: 'Hira', line: D.ines.greet[0] },
+      breakRoom: { id: 'gary', name: 'Irfan', line: D.gary.greet[1] },
+      designStudio: { id: 'kit', name: 'Bilal', line: D.kit.greet[0] },
+      financeCorner: { id: 'beatriz', name: 'Sana', line: D.beatriz.greet[0] }
     }
     const entry = map[room]
     if (!entry) return
@@ -229,6 +225,7 @@ export class Game {
   requestHint() {
     this.hintsUsed++
     this.hud.flipHint()
+    speech.speak('player', this.hud.currentHint)
     if (this.objectivePing) this.minimap.pingAt(this.objectivePing[0], this.objectivePing[1])
     this.saveNow()
   }
@@ -310,9 +307,9 @@ export class Game {
         if (this.flags.has('metDoris')) {
           setTimeout(() => {
             if (!this.dialogue.active) {
-              this.say([{ speaker: 'doris', name: 'DORIS (desk mic)', text: line }])
+              this.say([{ speaker: 'doris', name: 'AMNA (desk mic)', text: line }])
             } else {
-              this.toast('Doris: ' + line)
+              this.toast('Amna: ' + line)
             }
           }, 5200)
         }

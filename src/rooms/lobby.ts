@@ -1,4 +1,4 @@
-// LOBBY — hub. Doris, dressing, cold open, and the finale "Badge Out" (spec §8.1, §9.2).
+// LOBBY — hub. Amna, dressing, cold open, and the finale "Badge Out" (spec §8.1, §9.2).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -115,7 +115,8 @@ export function buildLobby(game: Game): RoomModule {
       c.beginPath(); c.arc(w / 2, h * 0.38, w * 0.2, 0, 7); c.fill()
       c.beginPath(); c.ellipse(w / 2, h * 0.85, w * 0.3, h * 0.3, 0, Math.PI, 0); c.fill()
       c.fillStyle = '#ccc'; c.font = 'bold 11px Arial'; c.textAlign = 'center'
-      c.fillText(id.toUpperCase(), w / 2, h * 0.95)
+      const shown: Record<string, string> = { doris: 'AMNA', marcus: 'ABDUL MOIZ', priya: 'ZAINAB', ines: 'HIRA', gary: 'IRFAN', kit: 'BILAL', beatriz: 'SANA', sam: 'TARIQ' }
+      c.fillText(shown[id] ?? id.toUpperCase(), w / 2, h * 0.95)
     }, 96, 128)
     const p = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.6), new THREE.MeshStandardMaterial({ map: tex }))
     p.position.set(-6.88, 1.9, 4 + i * 1.1)
@@ -150,7 +151,7 @@ export function buildLobby(game: Game): RoomModule {
   liftPanel.add(liftButton)
   g.add(liftPanel)
 
-  // --- DORIS -----------------------------------------------------------------
+  // --- AMNA -----------------------------------------------------------------
   let doris: Ghost | null = null
   if (!dorisReleased) {
     doris = makeGhost('doris')
@@ -166,7 +167,7 @@ export function buildLobby(game: Game): RoomModule {
     id: 'doris',
     position: new THREE.Vector3(0, 0, 7.6),
     radius: 2.6,
-    verb: 'Talk to Doris',
+    verb: 'Talk to Amna',
     priority: 0.9,
     mesh: doris?.rig.root,
     enabled: () => !!doris && !doris.released && !game.finaleStarted,
@@ -177,7 +178,7 @@ export function buildLobby(game: Game): RoomModule {
       if (!game.flags.has('metDoris')) {
         game.flags.add('metDoris')
         game.say(
-          D.doris.intro.map((text) => ({ speaker: 'doris', name: 'DORIS', text, anchor })),
+          D.doris.intro.map((text) => ({ speaker: 'doris', name: 'AMNA', text, anchor })),
           {
             ghost: doris, critical: true, onDone: () => {
               game.refreshObjective() // routes to the nearest starter room with directions + beacon
@@ -195,7 +196,7 @@ export function buildLobby(game: Game): RoomModule {
       greetIdx++
       const route = game.hud.currentHint || 'Off you pop down the corridor, love.'
       game.say([
-        { speaker: 'doris', name: 'DORIS', text: greeting, anchor },
+        { speaker: 'doris', name: 'AMNA', text: greeting, anchor },
         { speaker: 'doris', text: `Your next step, love: ${route}`, anchor },
         { speaker: 'doris', text: joke, anchor }
       ], { ghost: doris })
@@ -224,7 +225,7 @@ export function buildLobby(game: Game): RoomModule {
       if (finaleStep === 'awaitBadge') { badgeOut(); return }
       audio.sfx('badgeDeny')
       if (game.finaleReady()) {
-        game.toast('Say goodbye to Doris first. She has been waiting.')
+        game.toast('Say goodbye to Amna first. She has been waiting.')
       } else {
         game.intercom(D.building.liftDead, undefined, false)
       }
@@ -274,10 +275,10 @@ export function buildLobby(game: Game): RoomModule {
     })
     const anchor = doris.rig.head
     game.say(
-      D.doris.finale.map((text) => ({ speaker: 'doris', name: 'DORIS', text, anchor })),
+      D.doris.finale.map((text) => ({ speaker: 'doris', name: 'AMNA', text, anchor })),
       {
         ghost: doris, critical: true, onDone: () => {
-          // Doris stands, removes badge, joins the line
+          // Amna stands, removes badge, joins the line
           audio.sfx('paperPeel')
           doris!.release(() => {
             const badge = box(0.14, 0.02, 0.2, std(0xd8d0b8, { rough: 0.6 }), 0, 1.08, 8)

@@ -1,4 +1,4 @@
-// ARCHIVE — "Memory": Ines + Read One Page Aloud (spec §8.4). The emotional pivot.
+// ARCHIVE — "Memory": Hira + Read One Page Aloud (spec §8.4). The emotional pivot.
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -146,7 +146,7 @@ export function buildArchive(game: Game): RoomModule {
       game.hud.setHeldItem('THE ONBOARDING GUIDE v14')
       audio.sfx('paperPeel')
       if (ines && !ines.released) {
-        game.say([{ speaker: 'ines', name: 'INES', text: D.ines.foundPrompt, anchor: ines.rig.head }], { ghost: ines, frame: false })
+        game.say([{ speaker: 'ines', name: 'HIRA', text: D.ines.foundPrompt, anchor: ines.rig.head }], { ghost: ines, frame: false })
       }
       game.setObjective(D.ui.objectives.archiveRead, D.ui.hints.archive, [cx + 3.5, cz])
       game.saveNow()
@@ -164,7 +164,7 @@ export function buildArchive(game: Game): RoomModule {
     onInteract: () => readAloud()
   })
 
-  // --- Ines ---------------------------------------------------------------------
+  // --- Hira ---------------------------------------------------------------------
   let ines: Ghost | null = null
   if (!solved) {
     ines = makeGhost('ines')
@@ -197,7 +197,7 @@ export function buildArchive(game: Game): RoomModule {
     id: 'ines',
     position: new THREE.Vector3(cx + 3.1, 0, cz + 0.7),
     radius: 2.2,
-    verb: 'Talk to Ines',
+    verb: 'Talk to Hira',
     priority: 0.9,
     mesh: ines?.rig.root,
     enabled: () => !!ines && !ines.released && !ines.releasing,
@@ -208,7 +208,7 @@ export function buildArchive(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('inesTask')
         game.say([
-          { speaker: 'ines', name: 'INES', text: D.ines.greet[0], anchor },
+          { speaker: 'ines', name: 'HIRA', text: D.ines.greet[0], anchor },
           { speaker: 'ines', text: D.ines.greet[1], anchor },
           { speaker: 'ines', text: D.ines.task[0], anchor },
           { speaker: 'ines', text: D.ines.task[1], anchor }
@@ -221,7 +221,7 @@ export function buildArchive(game: Game): RoomModule {
       } else {
         const line = D.ines.greet[2 - (greetIdx % 2)]
         greetIdx++
-        game.say([{ speaker: 'ines', name: 'INES', text: line, anchor }], { ghost: ines })
+        game.say([{ speaker: 'ines', name: 'HIRA', text: line, anchor }], { ghost: ines })
       }
     }
   })
@@ -239,7 +239,7 @@ export function buildArchive(game: Game): RoomModule {
         critical: true, onDone: () => {
           const anchor = ines!.rig.head
           game.say([
-            { speaker: 'ines', name: 'INES', text: D.ines.solve, anchor },
+            { speaker: 'ines', name: 'HIRA', text: D.ines.solve, anchor },
             { speaker: 'ines', text: D.ines.release[0], anchor },
             { speaker: 'ines', text: D.ines.release[1], anchor },
             { speaker: 'ines', text: D.ines.release[2], anchor }
@@ -277,10 +277,10 @@ export function buildArchive(game: Game): RoomModule {
         hintTimer += dt
         if (hintTimer > 60 && hintStage === 0) {
           hintStage = 1
-          game.say([{ speaker: 'ines', name: 'INES', text: D.ines.hints[0], anchor: ines.rig.head }], { ghost: ines, frame: false })
+          game.say([{ speaker: 'ines', name: 'HIRA', text: D.ines.hints[0], anchor: ines.rig.head }], { ghost: ines, frame: false })
         } else if (hintTimer > 120 && hintStage === 1) {
           hintStage = 2 // decoys stop being interactable (enabled predicates read hintStage)
-          game.say([{ speaker: 'ines', name: 'INES', text: D.ines.hints[1], anchor: ines.rig.head }], { ghost: ines, frame: false })
+          game.say([{ speaker: 'ines', name: 'HIRA', text: D.ines.hints[1], anchor: ines.rig.head }], { ghost: ines, frame: false })
         }
       }
       if (!solvedGetter() && !haveBinder && (hintStage >= 1 || game.hintsUsed > 0)) {

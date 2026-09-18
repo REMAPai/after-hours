@@ -413,15 +413,11 @@ function tick() {
     if (input.consume('map')) minimap.toggleEnlarged()
 
     // world + player + systems
-    player.locked = player.locked || dialogue.active
-    if (!dialogue.active && game.phase === 'PLAY' && !game.finaleStarted) {
-      // release lock unless a sequence holds it
-    }
     player.update(dt, input, camRig)
     player.lookTarget = interact.focused ? interact.focused.position.clone().add(new THREE.Vector3(0, 1.2, 0)) : null
     world.update(dt, player.pos, time)
     game.update(dt)
-    interact.suppressed = dialogue.active || player.locked
+    interact.suppressed = player.locked
     interact.update(dt, player.pos, camRig.camera)
     camRig.update(dt, player.pos, player.jogging)
     player.updateVisibility(camRig.camera.position)

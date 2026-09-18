@@ -1,4 +1,4 @@
-// BREAK ROOM — "Care": Gary + Label the Sandwich + the vending machine duck (spec §8.5, §11).
+// BREAK ROOM — "Care": Irfan + Label the Sandwich + the vending machine duck (spec §8.5, §11).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -164,7 +164,7 @@ export function buildBreakRoom(game: Game): RoomModule {
     }
   })
 
-  // --- Gary + label puzzle ---------------------------------------------------------
+  // --- Irfan + label puzzle ---------------------------------------------------------
   let gary: Ghost | null = null
   if (!solved) {
     gary = makeGhost('gary')
@@ -206,7 +206,7 @@ export function buildBreakRoom(game: Game): RoomModule {
     const playerAnchor = () => game.player.pos.clone().add(new THREE.Vector3(0, 2.0, 0))
     const dimmed = wrongTries >= 2 // mercy rule
     const firstChoices = [
-      ...(dimmed ? [] : [{ label: '"SANDWICH"', value: 'w1' }, { label: '"GARY\'S"', value: 'w2' }]),
+      ...(dimmed ? [] : [{ label: '"SANDWICH"', value: 'w1' }, { label: '"IRFAN\'S"', value: 'w2' }]),
       { label: 'More label ideas…', value: 'more' }
     ]
     game.say([
@@ -218,7 +218,7 @@ export function buildBreakRoom(game: Game): RoomModule {
             {
               speaker: 'player', name: 'YOU', text: 'Bigger. Bolder. Something… binding.', anchor: playerAnchor,
               choices: [
-                { label: '"GARY\'S. YES, THIS GARY. THE GHOST. HE KNOWS."', value: 'win' },
+                { label: '"IRFAN\'S. YES, THIS IRFAN. THE GHOST. HE KNOWS."', value: 'win' },
                 ...(dimmed ? [] : [{ label: '"FREE FOOD"', value: 'w3' }])
               ]
             }
@@ -240,7 +240,7 @@ export function buildBreakRoom(game: Game): RoomModule {
       wrongTries++
       audio.sfx('badgeDeny')
       const rejIdx = v === 'w1' ? 0 : v === 'w2' ? 1 : 2
-      game.say([{ speaker: 'gary', name: 'GARY', text: D.gary.rejections[rejIdx], anchor }], { ghost: gary })
+      game.say([{ speaker: 'gary', name: 'IRFAN', text: D.gary.rejections[rejIdx], anchor }], { ghost: gary })
       game.saveNow()
     }
   }
@@ -251,7 +251,7 @@ export function buildBreakRoom(game: Game): RoomModule {
     id: 'gary',
     position: new THREE.Vector3(cx + 2.6, 0, cz - 3.2),
     radius: 2.2,
-    verb: 'Talk to Gary',
+    verb: 'Talk to Irfan',
     priority: 0.9,
     mesh: gary?.rig.root,
     enabled: () => !!gary && !gary.released && !gary.releasing,
@@ -262,7 +262,7 @@ export function buildBreakRoom(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('garyTask')
         game.say([
-          { speaker: 'gary', name: 'GARY', text: D.gary.greet[2], anchor },
+          { speaker: 'gary', name: 'IRFAN', text: D.gary.greet[2], anchor },
           { speaker: 'gary', text: D.gary.task[0], anchor },
           { speaker: 'gary', text: D.gary.task[1], anchor }
         ], {
@@ -274,7 +274,7 @@ export function buildBreakRoom(game: Game): RoomModule {
       } else {
         const line = D.gary.greet[greetIdx % 2]
         greetIdx++
-        game.say([{ speaker: 'gary', name: 'GARY', text: line, anchor }], { ghost: gary })
+        game.say([{ speaker: 'gary', name: 'IRFAN', text: line, anchor }], { ghost: gary })
       }
     }
   })
@@ -286,14 +286,14 @@ export function buildBreakRoom(game: Game): RoomModule {
     sandwich.visible = true
     // labelled monument
     const label = new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.06), new THREE.MeshStandardMaterial({
-      map: makeLabelTexture("GARY'S.", { w: 128, h: 48, bg: '#ffffff', fg: '#222' })
+      map: makeLabelTexture("IRFAN'S.", { w: 128, h: 48, bg: '#ffffff', fg: '#222' })
     }))
     label.position.set(0, 0.04, 0.09)
     sandwich.add(label)
     if (!gary) return
     const anchor = gary.rig.head
     game.say([
-      { speaker: 'gary', name: 'GARY', text: D.gary.solve, anchor },
+      { speaker: 'gary', name: 'IRFAN', text: D.gary.solve, anchor },
       { speaker: 'gary', text: D.gary.release[0], anchor },
       { speaker: 'gary', text: D.gary.release[1], anchor },
       { speaker: 'gary', text: D.gary.release[2], anchor }
@@ -326,10 +326,10 @@ export function buildBreakRoom(game: Game): RoomModule {
         hintTimer += dt
         if (hintTimer > 60 && hintStage === 0) {
           hintStage = 1
-          game.say([{ speaker: 'gary', name: 'GARY', text: D.gary.hints[0], anchor: gary.rig.head }], { ghost: gary, frame: false })
+          game.say([{ speaker: 'gary', name: 'IRFAN', text: D.gary.hints[0], anchor: gary.rig.head }], { ghost: gary, frame: false })
         } else if (hintTimer > 120 && hintStage === 1) {
           hintStage = 2
-          game.say([{ speaker: 'gary', name: 'GARY', text: D.gary.hints[1], anchor: gary.rig.head }], { ghost: gary, frame: false })
+          game.say([{ speaker: 'gary', name: 'IRFAN', text: D.gary.hints[1], anchor: gary.rig.head }], { ghost: gary, frame: false })
         }
       }
     }

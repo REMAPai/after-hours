@@ -1,4 +1,4 @@
-// DESIGN STUDIO — "Taste": Kit + Canonise the Logo (spec §8.6).
+// DESIGN STUDIO — "Taste": Bilal + Canonise the Logo (spec §8.6).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -137,7 +137,7 @@ export function buildDesignStudio(game: Game): RoomModule {
       enabled: () => !solvedGetter() && (!hintDimmed() || isReal),
       onInteract: () => {
         if (!game.flags.has('kitTask')) {
-          game.toast('Six framed candidates. Kit should weigh in first.')
+          game.toast('Six framed candidates. Bilal should weigh in first.')
           return
         }
         if (!kit || kit.released) return
@@ -145,7 +145,7 @@ export function buildDesignStudio(game: Game): RoomModule {
         if (isReal) {
           game.say([
             {
-              speaker: 'kit', name: 'KIT', text: D.kit.choosePrompt, anchor,
+              speaker: 'kit', name: 'BILAL', text: D.kit.choosePrompt, anchor,
               choices: [
                 { label: '"This one. It was always this one."', value: 'yes' },
                 { label: 'Keep looking', value: 'no' }
@@ -155,7 +155,7 @@ export function buildDesignStudio(game: Game): RoomModule {
         } else {
           const idx = which
           critiqued.add(idx)
-          game.say([{ speaker: 'kit', name: 'KIT', text: D.kit.critiques[idx], anchor }], { ghost: kit, frame: false })
+          game.say([{ speaker: 'kit', name: 'BILAL', text: D.kit.critiques[idx], anchor }], { ghost: kit, frame: false })
         }
       }
     })
@@ -171,7 +171,7 @@ export function buildDesignStudio(game: Game): RoomModule {
     })
   }
 
-  // --- Kit --------------------------------------------------------------------------
+  // --- Bilal --------------------------------------------------------------------------
   let kit: Ghost | null = null
   if (!solved) {
     kit = makeGhost('kit')
@@ -191,7 +191,7 @@ export function buildDesignStudio(game: Game): RoomModule {
     game.interact.add({
       id: 'frame-keepsake',
       position: f.position.clone().setY(0.5),
-      verb: "Inspect Kit's frame",
+      verb: "Inspect Bilal's frame",
       mesh: f,
       onInteract: () => game.toast(D.kit.echo)
     })
@@ -207,7 +207,7 @@ export function buildDesignStudio(game: Game): RoomModule {
     id: 'kit',
     position: new THREE.Vector3(cx - 1, 0, cz - 3),
     radius: 2.2,
-    verb: 'Talk to Kit',
+    verb: 'Talk to Bilal',
     priority: 0.9,
     mesh: kit?.rig.root,
     enabled: () => !!kit && !kit.released && !kit.releasing,
@@ -218,7 +218,7 @@ export function buildDesignStudio(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('kitTask')
         game.say([
-          { speaker: 'kit', name: 'KIT', text: D.kit.greet[1], anchor },
+          { speaker: 'kit', name: 'BILAL', text: D.kit.greet[1], anchor },
           { speaker: 'kit', text: D.kit.task[0], anchor },
           { speaker: 'kit', text: D.kit.task[1], anchor }
         ], {
@@ -230,7 +230,7 @@ export function buildDesignStudio(game: Game): RoomModule {
       } else {
         const line = D.kit.greet[greetIdx % D.kit.greet.length]
         greetIdx++
-        game.say([{ speaker: 'kit', name: 'KIT', text: line, anchor }], { ghost: kit })
+        game.say([{ speaker: 'kit', name: 'BILAL', text: line, anchor }], { ghost: kit })
       }
     }
   })
@@ -242,7 +242,7 @@ export function buildDesignStudio(game: Game): RoomModule {
     if (!kit) return
     const anchor = kit.rig.head
     game.say([
-      { speaker: 'kit', name: 'KIT', text: D.kit.solve, anchor },
+      { speaker: 'kit', name: 'BILAL', text: D.kit.solve, anchor },
       { speaker: 'kit', text: D.kit.release[0], anchor },
       { speaker: 'kit', text: D.kit.release[1], anchor },
       { speaker: 'kit', text: D.kit.release[2], anchor }
@@ -273,11 +273,11 @@ export function buildDesignStudio(game: Game): RoomModule {
         hintTimer += dt
         if (hintTimer > 60 && hintStage === 0) {
           hintStage = 1
-          game.say([{ speaker: 'kit', name: 'KIT', text: D.kit.hints[0], anchor: kit.rig.head }], { ghost: kit, frame: false })
+          game.say([{ speaker: 'kit', name: 'BILAL', text: D.kit.hints[0], anchor: kit.rig.head }], { ghost: kit, frame: false })
         } else if (hintTimer > 120 && hintStage === 1) {
           hintStage = 2
           dimWrongFrames()
-          game.say([{ speaker: 'kit', name: 'KIT', text: D.kit.hints[1], anchor: kit.rig.head }], { ghost: kit, frame: false })
+          game.say([{ speaker: 'kit', name: 'BILAL', text: D.kit.hints[1], anchor: kit.rig.head }], { ghost: kit, frame: false })
         }
       }
     }

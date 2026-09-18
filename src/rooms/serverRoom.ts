@@ -1,4 +1,4 @@
-// SERVER ROOM — "Uptime": Marcus + Cable Match puzzle (spec §8.2).
+// SERVER ROOM — "Uptime": Abdul Moiz + Cable Match puzzle (spec §8.2).
 import * as THREE from 'three'
 import type { Game, RoomModule } from '../game/game.ts'
 import { makeGhost, type Ghost } from '../characters/ghosts.ts'
@@ -169,7 +169,7 @@ export function buildServerRoom(game: Game): RoomModule {
         audio.sfx('vendingClunk')
         game.toast(D.toasts.misc.duckHint)
         if (marcus && !marcus.released) {
-          game.say([{ speaker: 'marcus', name: 'MARCUS', text: D.marcus.mystery, anchor: marcus.rig.head }], { ghost: marcus })
+          game.say([{ speaker: 'marcus', name: 'ABDUL MOIZ', text: D.marcus.mystery, anchor: marcus.rig.head }], { ghost: marcus })
         }
         game.saveNow()
       }
@@ -184,13 +184,13 @@ export function buildServerRoom(game: Game): RoomModule {
       if (marcus && !marcus.released) {
         marcus.rig.triggerStartle()
         const line = D.marcus.wrong[Math.min(wrongCount - 1, D.marcus.wrong.length - 1) % D.marcus.wrong.length]
-        game.say([{ speaker: 'marcus', name: 'MARCUS', text: line, anchor: marcus.rig.head }], { ghost: marcus, frame: false })
+        game.say([{ speaker: 'marcus', name: 'ABDUL MOIZ', text: line, anchor: marcus.rig.head }], { ghost: marcus, frame: false })
       }
       // mercy rule: after 3 fails the matching port glows while cable held
     }
   }
 
-  // --- Marcus -----------------------------------------------------------------
+  // --- Abdul Moiz -----------------------------------------------------------------
   if (!solved) {
     marcus = makeGhost('marcus')
     marcus.setPosition(cx + 2.5, 0, cz + 1.4, -Math.PI * 0.8) // open floor, clear of the racks and cables
@@ -208,7 +208,7 @@ export function buildServerRoom(game: Game): RoomModule {
     game.interact.add({
       id: 'pager-keepsake',
       position: pager.position.clone().setY(0.3),
-      verb: "Inspect Marcus's pager",
+      verb: "Inspect Abdul Moiz's pager",
       mesh: pager,
       onInteract: () => game.toast(D.marcus.echo)
     })
@@ -220,7 +220,7 @@ export function buildServerRoom(game: Game): RoomModule {
     id: 'marcus',
     position: new THREE.Vector3(cx + 2.5, 0, cz + 1.4),
     radius: 2.2,
-    verb: 'Talk to Marcus',
+    verb: 'Talk to Abdul Moiz',
     priority: 0.9,
     mesh: marcus?.rig.root,
     enabled: () => !!marcus && !marcus.released && !marcus.releasing,
@@ -231,7 +231,7 @@ export function buildServerRoom(game: Game): RoomModule {
         taskGiven = true
         game.flags.add('marcusTask')
         game.say([
-          { speaker: 'marcus', name: 'MARCUS', text: D.marcus.greet[0], anchor },
+          { speaker: 'marcus', name: 'ABDUL MOIZ', text: D.marcus.greet[0], anchor },
           { speaker: 'marcus', text: D.marcus.task[0], anchor },
           { speaker: 'marcus', text: D.marcus.task[1], anchor }
         ], {
@@ -243,7 +243,7 @@ export function buildServerRoom(game: Game): RoomModule {
       } else {
         const line = D.marcus.greet[greetIdx % D.marcus.greet.length]
         greetIdx++
-        game.say([{ speaker: 'marcus', name: 'MARCUS', text: line, anchor }], { ghost: marcus })
+        game.say([{ speaker: 'marcus', name: 'ABDUL MOIZ', text: line, anchor }], { ghost: marcus })
       }
     }
   })
@@ -258,7 +258,7 @@ export function buildServerRoom(game: Game): RoomModule {
     const anchor = marcus.rig.head
     setTimeout(() => {
       game.say([
-        { speaker: 'marcus', name: 'MARCUS', text: D.marcus.solve, anchor },
+        { speaker: 'marcus', name: 'ABDUL MOIZ', text: D.marcus.solve, anchor },
         { speaker: 'marcus', text: D.marcus.release[0], anchor },
         { speaker: 'marcus', text: D.marcus.release[1], anchor },
         { speaker: 'marcus', text: D.marcus.release[2], anchor }
@@ -308,10 +308,10 @@ export function buildServerRoom(game: Game): RoomModule {
           hintTimer += dt
           if (hintTimer > 60 && hintStage === 0) {
             hintStage = 1
-            game.say([{ speaker: 'marcus', name: 'MARCUS', text: D.marcus.hints[0], anchor: marcus.rig.head }], { ghost: marcus, frame: false })
+            game.say([{ speaker: 'marcus', name: 'ABDUL MOIZ', text: D.marcus.hints[0], anchor: marcus.rig.head }], { ghost: marcus, frame: false })
           } else if (hintTimer > 120 && hintStage === 1) {
             hintStage = 2
-            game.say([{ speaker: 'marcus', name: 'MARCUS', text: D.marcus.hints[1], anchor: marcus.rig.head }], { ghost: marcus, frame: false })
+            game.say([{ speaker: 'marcus', name: 'ABDUL MOIZ', text: D.marcus.hints[1], anchor: marcus.rig.head }], { ghost: marcus, frame: false })
           }
         }
         // port glow when matching cable held (hint 2 behaviour + mercy)
