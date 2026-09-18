@@ -197,7 +197,7 @@ export function buildLobby(game: Game): RoomModule {
       const route = game.hud.currentHint || 'Head down the corridor. You will find them.'
       game.say([
         { speaker: 'doris', name: 'AMNA', text: greeting, anchor },
-        { speaker: 'doris', text: `Your next step: `, anchor },
+        { speaker: 'doris', text: `Your next step: ${route}`, anchor },
         { speaker: 'doris', text: joke, anchor }
       ], { ghost: doris })
     }
