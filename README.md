@@ -6,6 +6,8 @@ badging in late to grab a forgotten charger. The lifts die, the intercom says yo
 mid-task. Help each ghost finish the one thing keeping them here, collect the seven fragments
 of the Remap logo, and go home.
 
+**▶ Play it: https://after-hours-pink-ten.vercel.app**
+
 No combat, no fail states, spooky → warm. Built as an internal engagement piece and for
 embedding on the Remap website.
 
@@ -37,11 +39,12 @@ Debug helpers: `?debug` (FPS overlay, teleport keys 1–9, `G` grant fragment, `
 
 ## Deploy
 
-`dist/` is plain static files — upload to any host, or let Vercel build from this repo
+Auto-deployed by Vercel on every push to `main` (production: https://after-hours-pink-ten.vercel.app).
+`dist/` is also plain static files — upload anywhere, or let Vercel build from this repo
 (auto-detected Vite: `npm run build`, output `dist`). Embed with:
 
 ```html
-<iframe src="https://<your-deployment>/" width="1280" height="720"
+<iframe src="https://after-hours-pink-ten.vercel.app/" width="1280" height="720"
         allow="fullscreen; gamepad; autoplay" style="border:0"></iframe>
 ```
 
