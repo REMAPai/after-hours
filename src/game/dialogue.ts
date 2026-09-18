@@ -202,8 +202,10 @@ export class DialogueSystem {
         const readTime = Math.max(1.2, 0.8 + line.text.length * 0.028)
         // voice done = its end event fired, or nothing is speaking any more; hard cap
         // scaled to the line so a stuck speech engine can never freeze a conversation
-        const voiceDone = this.speechDone || !speech.speaking
-        const cap = readTime + Math.min(12, line.text.length * 0.05)
+        // the speech engine guarantees onEnd (start/duration watchdogs), so the cap is
+        // only a last resort — kept short so nothing ever feels stuck
+        const voiceDone = this.speechDone
+        const cap = readTime + Math.min(8, line.text.length * 0.04)
         if (this.autoAdvance && this.lineTimer >= readTime && (voiceDone || this.lineTimer > cap)) {
           this.advance()
           return

@@ -161,7 +161,7 @@ export class HUD {
       this.toastEl.textContent = t
       this.toastEl.style.display = 'block'
       // the player reads what they inspect aloud — but never over a ghost mid-line
-      if (!speech.speaking) speech.speak('player', t)
+      if (!speech.active) speech.speak('player', t)
       this.toastTimer = 3 + t.length * 0.02
     }
     // fade HUD when idle

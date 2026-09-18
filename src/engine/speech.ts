@@ -1,6 +1,12 @@
 // Spoken voices via the browser's built-in SpeechSynthesis (no assets, offline).
 // Each character gets a distinct pitch/rate and a preferred voice gender; falls back
 // gracefully when the browser has no voices (blips still play).
+//
+// Chrome's speech engine is flaky: an utterance queued right after cancel() can be
+// silently dropped (leaving it "speaking" forever), and utterances longer than ~15 s
+// are cut off without an end event. So every line is chunked by sentence, started
+// after a short delay, watched by start/duration watchdogs, and kept alive with the
+// pause/resume trick. onEnd is guaranteed to fire exactly once per speak() call.
 
 interface VoiceProfile { pitch: number; rate: number; gender: 'f' | 'm' | 'n'; volume?: number }
 
@@ -23,12 +29,29 @@ const PROFILES: Record<string, VoiceProfile> = {
 const FEMALE_HINTS = /female|zira|hazel|susan|samantha|victoria|karen|moira|tessa|fiona|libby|sonia|aria|jenny|emma|ava|serena/i
 const MALE_HINTS = /male|david|mark|george|daniel|james|ryan|guy|thomas|oliver|alex|fred|arthur|brian|christopher|eric/i
 
+// Split into sentence-ish chunks of at most ~160 chars (Chrome cuts off long utterances).
+function chunk(text: string): string[] {
+  const clean = text.replace(/[*_~]/g, '').trim()
+  const parts = clean.split(/(?<=[.!?…])\s+/)
+  const out: string[] = []
+  let cur = ''
+  for (const p of parts) {
+    if ((cur + ' ' + p).trim().length > 160 && cur) { out.push(cur.trim()); cur = p }
+    else cur = (cur + ' ' + p).trim()
+  }
+  if (cur) out.push(cur)
+  return out.length ? out : [clean]
+}
+
 export class Speech {
   enabled = true
   volume = 0.9
-  speaking = false
+  speaking = false          // an utterance has actually started and not finished
+  private busyToken = 0     // a speak() is in flight (from call until onEnd)
   private voices: SpeechSynthesisVoice[] = []
   private supported = typeof window !== 'undefined' && 'speechSynthesis' in window
+  private timers: number[] = []
+  private keepAlive: number | null = null
 
   constructor() {
     if (!this.supported) return
@@ -38,6 +61,8 @@ export class Speech {
   }
 
   get available(): boolean { return this.supported && this.voices.length > 0 }
+  /** True from speak() until that line's onEnd — use this to avoid talking over a line. */
+  get active(): boolean { return this.busyToken !== 0 }
 
   private pick(gender: 'f' | 'm' | 'n', seed: string): SpeechSynthesisVoice | null {
     if (!this.voices.length) return null
@@ -45,37 +70,71 @@ export class Speech {
     const pool = english.length ? english : this.voices
     const byGender = pool.filter((v) => gender === 'f' ? FEMALE_HINTS.test(v.name) : gender === 'm' ? MALE_HINTS.test(v.name) : true)
     const list = byGender.length ? byGender : pool
-    // stable per-character choice so the same ghost always gets the same voice
     let h = 0
     for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0
     return list[h % list.length]
   }
 
-  // Returns true if the line is being spoken. onEnd fires when THIS utterance
-  // finishes; a cancelled utterance (superseded by the next line) never fires it.
+  private clearTimers() {
+    for (const t of this.timers) clearTimeout(t)
+    this.timers = []
+    if (this.keepAlive) { clearInterval(this.keepAlive); this.keepAlive = null }
+  }
+
+  // Returns true if the line will be spoken (onEnd will fire once, even on failure).
   speak(speaker: string, text: string, onEnd?: () => void): boolean {
     if (!this.supported || !this.enabled || !this.voices.length) return false
-    try {
-      speechSynthesis.cancel()
-      const p = PROFILES[speaker] ?? PROFILES.narrator
-      const u = new SpeechSynthesisUtterance(text.replace(/[*_~]/g, ''))
-      u.pitch = p.pitch
-      u.rate = p.rate
-      u.volume = Math.min(1, this.volume * (p.volume ?? 1))
-      const v = this.pick(p.gender, speaker)
-      if (v) u.voice = v
-      let done = false
-      const finish = () => { if (done) return; done = true; this.speaking = false; onEnd?.() }
-      u.onend = finish
-      u.onerror = (e) => { if (e.error !== 'interrupted' && e.error !== 'canceled') finish() }
-      this.speaking = true
-      speechSynthesis.speak(u)
-      return true
-    } catch { this.speaking = false; return false }
+    this.stop()
+    const token = ++this.busyToken || (this.busyToken = 1)
+    const p = PROFILES[speaker] ?? PROFILES.narrator
+    const voice = this.pick(p.gender, speaker)
+    const chunks = chunk(text)
+    const expectedMs = 600 + (text.length / (13 * p.rate)) * 1000
+    let finished = false
+    const finish = () => {
+      if (finished || token !== this.busyToken) return
+      finished = true
+      this.clearTimers()
+      this.speaking = false
+      this.busyToken = 0
+      onEnd?.()
+    }
+    let started = false
+    let ended = 0
+    // Chrome drops utterances queued immediately after cancel(); a short gap avoids that
+    this.timers.push(window.setTimeout(() => {
+      if (token !== this.busyToken) return
+      try {
+        for (const c of chunks) {
+          const u = new SpeechSynthesisUtterance(c)
+          u.pitch = p.pitch
+          u.rate = p.rate
+          u.volume = Math.min(1, this.volume * (p.volume ?? 1))
+          if (voice) u.voice = voice
+          u.onstart = () => { started = true; this.speaking = true }
+          u.onend = () => { if (++ended >= chunks.length) finish() }
+          u.onerror = (e) => {
+            if (e.error === 'interrupted' || e.error === 'canceled') return
+            if (++ended >= chunks.length) finish()
+          }
+          speechSynthesis.speak(u)
+        }
+        // keep Chrome from stalling mid-line
+        this.keepAlive = window.setInterval(() => {
+          try { if (speechSynthesis.speaking) { speechSynthesis.pause(); speechSynthesis.resume() } } catch { /* */ }
+        }, 8000)
+      } catch { finish() }
+    }, 60))
+    // watchdogs: never started → give up quickly; started but no end → force-finish
+    this.timers.push(window.setTimeout(() => { if (!started) finish() }, 1800))
+    this.timers.push(window.setTimeout(finish, expectedMs * 1.6 + 2500))
+    return true
   }
 
   stop() {
+    this.clearTimers()
     this.speaking = false
+    this.busyToken = 0
     if (!this.supported) return
     try { speechSynthesis.cancel() } catch { /* */ }
   }
