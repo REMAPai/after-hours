@@ -124,8 +124,8 @@ export function buildMeetingRoom(game: Game): RoomModule {
       const side = i < 4 ? -1 : 1
       const idx = i < 4 ? i : i - 4
       // face the table: rig faces +z at rotation 0, so the north row (side -1) faces +z
-      if (i === 8) s.setPosition(cx + 2.8, -0.28, cz, -Math.PI / 2)
-      else s.setPosition(cx - 2 + idx * 1.0, -0.28, cz + side * 1.35, side === -1 ? 0 : Math.PI)
+      if (i === 8) s.setPosition(cx + 2.8, -0.37, cz, -Math.PI / 2)
+      else s.setPosition(cx - 2 + idx * 1.0, -0.37, cz + side * 1.35, side === -1 ? 0 : Math.PI)
       // seated pose
       s.rig.upperLegL.rotation.x = -1.35
       s.rig.upperLegR.rotation.x = -1.35

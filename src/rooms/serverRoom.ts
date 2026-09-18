@@ -193,7 +193,7 @@ export function buildServerRoom(game: Game): RoomModule {
   // --- Marcus -----------------------------------------------------------------
   if (!solved) {
     marcus = makeGhost('marcus')
-    marcus.setPosition(cx + 1.5, 0, cz - 1.5, -Math.PI / 4)
+    marcus.setPosition(cx + 2.5, 0, cz + 1.4, -Math.PI * 0.8) // open floor, clear of the racks and cables
     game.scene.add(marcus.group)
     game.ghosts.push(marcus)
   } else {
@@ -218,7 +218,7 @@ export function buildServerRoom(game: Game): RoomModule {
   let taskGiven = game.flags.has('marcusTask')
   game.interact.add({
     id: 'marcus',
-    position: new THREE.Vector3(cx + 1.5, 0, cz - 1.5),
+    position: new THREE.Vector3(cx + 2.5, 0, cz + 1.4),
     radius: 2.2,
     verb: 'Talk to Marcus',
     priority: 0.9,
@@ -236,7 +236,7 @@ export function buildServerRoom(game: Game): RoomModule {
           { speaker: 'marcus', text: D.marcus.task[1], anchor }
         ], {
           ghost: marcus, critical: true, onDone: () => {
-            game.setObjective(D.ui.objectives.serverCables, D.ui.hints.server, [cx + 1.5, cz - 1.5])
+            game.setObjective(D.ui.objectives.serverCables, D.ui.hints.server, [cx + 2.5, cz + 1.4])
             game.saveNow()
           }
         })
@@ -292,7 +292,7 @@ export function buildServerRoom(game: Game): RoomModule {
         }
       }
       if (!game.flags.has('serverSolved')) {
-        game.setObjective(taskGiven ? D.ui.objectives.serverCables : D.ui.objectives.server, D.ui.hints.server, [cx + 1.5, cz - 1.5])
+        game.setObjective(taskGiven ? D.ui.objectives.serverCables : D.ui.objectives.server, D.ui.hints.server, [cx + 2.5, cz + 1.4])
       }
     },
     update: (dt: number) => {
@@ -301,7 +301,7 @@ export function buildServerRoom(game: Game): RoomModule {
         strobe.intensity = plugged.size === 4 ? 0 : (Math.sin(performance.now() / 250) > 0 ? 10 : 1)
         // pacing loop
         if (!marcus.talking && !marcus.releasing) {
-          marcus.group.position.x = cx + 1.5 + Math.sin(performance.now() / 1800) * 0.75
+          marcus.group.position.x = cx + 2.5 + Math.sin(performance.now() / 1800) * 0.6
         }
         // passive hints
         if (game.currentRoom === 'serverRoom' && taskGiven && !game.dialogue.active) {

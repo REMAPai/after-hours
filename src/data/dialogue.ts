@@ -4,6 +4,15 @@
 // calls everyone "love"; Sam plain, short, kind. Building: politely ominous -> warm.
 
 export const D = {
+  // Opening story cards (shown before the badge-in) — what is happening, and the MISSION.
+  story: [
+    { title: '9:41 PM · Thursday', text: 'Three weeks into your new job at Remap. You were halfway home when you realised your phone charger is still on your desk. Everyone else left hours ago.' },
+    { title: 'The building is closed.', text: "You badge back in. The lifts die behind you. The lights flicker. And the intercom — calm, polite, wrong — tells you the doors won't open again until \"the work is done.\"" },
+    { title: 'The office is haunted.', text: 'Not by monsters. By former colleagues — stuck here for years, each still trying to finish the one task they never closed. They cannot leave. And now, neither can you.' },
+    { title: 'YOUR MISSION', text: 'Find each ghost and help them finish their unfinished work. Every freed ghost gives you one fragment of the Remap logo. Collect all 7 fragments to unlock the lift — and go home.', mission: true }
+  ] as { title: string; text: string; mission?: boolean }[],
+  missionBrief: 'MISSION: free the 7 ghosts by finishing their work · collect 7 logo fragments · unlock the lift. Start with the Server Room or the Meeting Room.',
+
   building: {
     coldOpen: 'Good evening, New Hire. The building is closed. You may leave when the work is done.',
     frag1: 'One task complete. The building thanks you. The building is… surprised, honestly.',

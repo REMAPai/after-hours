@@ -20,13 +20,14 @@ export interface SettingsData {
   spookFree: boolean; textSize: number; reduceMotion: boolean; cbMinimap: boolean
   quality: 'auto' | 'low' | 'med' | 'high'
   textSpeed: 'slow' | 'normal' | 'instant'
+  voice: boolean
   ticket: number
 }
 
 export const defaultSettings = (): SettingsData => ({
   v: 1, volMaster: 0.8, volMusic: 0.7, volSfx: 0.8, volBlips: 0.7,
   sensitivity: 1.0, invertY: false, spookFree: false, textSize: 100,
-  reduceMotion: false, cbMinimap: false, quality: 'auto', textSpeed: 'normal', ticket: 40412
+  reduceMotion: false, cbMinimap: false, quality: 'auto', textSpeed: 'normal', voice: true, ticket: 40412
 })
 
 function safeGet(key: string): string | null {

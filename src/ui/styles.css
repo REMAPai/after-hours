@@ -297,3 +297,25 @@
   color: #6f6; background: rgba(0,0,0,0.6); font: 11px monospace;
   padding: 3px 10px; border-radius: 4px; z-index: 99; pointer-events: none;
 }
+
+/* --- Opening story cards -------------------------------------------------------- */
+.story-screen { background: radial-gradient(ellipse at 50% 40%, #1a2130 0%, #07090c 75%); flex-direction: column; }
+.story-card {
+  width: min(620px, 92vw); background: var(--paper); color: #2b2a26;
+  border-radius: 10px; padding: 34px 40px 26px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7); transform: rotate(-0.4deg);
+  border-top: 8px solid var(--corp-blue);
+}
+.story-card.mission { border-top-color: var(--remap-orange); background: #fff8ee; }
+.story-kicker { font-size: 0.7em; letter-spacing: 0.16em; color: #8a8478; font-weight: 700; }
+.story-title { font-size: 1.5em; margin: 10px 0 12px; color: #1c1c1e; }
+.story-card.mission .story-title { color: var(--remap-orange); letter-spacing: 0.08em; }
+.story-text { font-size: 1.05em; line-height: 1.6; min-height: 5.2em; margin: 0; }
+.story-card.mission .story-text { font-weight: 600; }
+.story-next { margin-top: 20px; text-align: right; font-size: 0.8em; color: #8a8478; }
+
+/* MISSION label on the objective sticky */
+.sticky-label {
+  font-family: "Segoe UI", Inter, system-ui, sans-serif; font-size: 0.66em; font-weight: 800;
+  letter-spacing: 0.18em; color: #a0451c; margin-bottom: 4px;
+}

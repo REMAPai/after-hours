@@ -7,6 +7,7 @@ import { CameraRig } from './engine/cameraRig.ts'
 import { Input, glyph } from './engine/input.ts'
 import { audio } from './engine/audio.ts'
 import { loadSave, loadSettings, writeSettings, clearSave } from './engine/save.ts'
+import { speech } from './engine/speech.ts'
 import { World } from './game/world.ts'
 import { Player } from './game/player.ts'
 import { InteractionSystem } from './game/interaction.ts'
@@ -27,7 +28,7 @@ import { buildDesignStudio } from './rooms/designStudio.ts'
 import { buildFinanceCorner } from './rooms/financeCorner.ts'
 import { buildRooftop } from './rooms/rooftop.ts'
 import { buildLift } from './rooms/lift.ts'
-import { showTitle, showLoading, showBadgeIn, showPause, showSettings, showCredits, makeLetterbox, makeFade, el } from './ui/screens.ts'
+import { showTitle, showLoading, showBadgeIn, showStory, showPause, showSettings, showCredits, makeLetterbox, makeFade, el } from './ui/screens.ts'
 
 const appEl = document.getElementById('app')!
 const uiRoot = document.getElementById('ui-root')!
@@ -84,6 +85,8 @@ function applySettings() {
   camRig.reduceMotion = settings.reduceMotion
   rndr.reduceMotion = settings.reduceMotion
   dialogue.charsPerSec = settings.textSpeed === 'slow' ? 18 : settings.textSpeed === 'instant' ? 9999 : 35
+  speech.enabled = settings.voice
+  speech.volume = settings.volMaster * settings.volBlips
   if (settings.quality !== 'auto') rndr.setQuality(settings.quality as Quality)
   writeSettings(settings)
 }
@@ -180,7 +183,8 @@ function goTitle() {
 
 function startNewGame() {
   game.phase = 'BADGE_IN'
-  showBadgeIn(() => {
+  // story cards first (what is happening + the MISSION), then the badge reader
+  showStory(() => showBadgeIn(() => {
     player.teleport(0, 12.5, Math.PI)
     camRig.yaw = 0
     camRig.snapTo(player.pos)
@@ -188,7 +192,7 @@ function startNewGame() {
     game.coldOpen?.()
     hud.setFragments(game.fragments)
     game.toast('Move: WASD · Camera: mouse · Interact: E · Jog: Shift · Pause/exit: Esc')
-  })
+  }))
 }
 
 function enterPlay(refreshObjective = true) {
